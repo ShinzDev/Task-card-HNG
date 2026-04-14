@@ -3,123 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>High-Fidelity Todo Card</title>
+    <title>Accessible Task Component</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/dist/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #f3f5f4; }
-        .card-shadow { box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05); }
-        .custom-checkbox:checked + label .check-icon { display: block; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #f8faf9; 
+        }
+
+        /* Focus Styles for Accessibility */
+        :focus-visible {
+            outline: 3px solid #1a4d2e;
+            outline-offset: 2px;
+        }
+
+        .todo-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        /* Semantic Strike-through when checked */
+        input:checked ~ div h2 {
+            text-decoration: line-through;
+            color: #9ca3af;
+        }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen p-6">
+<body class="flex items-center justify-center min-h-screen p-4">
 
     <article 
         data-testid="test-todo-card" 
-        class="bg-white rounded-[2rem] p-8 w-full max-w-md card-shadow border border-gray-100 transition-all hover:scale-[1.01]"
+        class="todo-card bg-white rounded-[1.5rem] p-6 w-full max-w-[480px] shadow-sm border border-gray-100"
+        role="region" 
+        aria-labelledby="task-title"
     >
         <div class="flex justify-between items-center mb-6">
             <span 
                 data-testid="test-todo-priority" 
-                class="px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-orange-100 text-orange-600"
+                aria-label="Priority level: High"
+                class="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest bg-orange-50 text-orange-700 border border-orange-100"
             >
                 High Priority
             </span>
-            <div class="flex gap-2">
-                <button data-testid="test-todo-edit-button" aria-label="Edit Task" class="p-2 hover:bg-gray-100 rounded-full text-gray-400 transition-colors">
-                    <i class="fa-solid fa-pen-to-square"></i>
+            
+            <div class="flex gap-1">
+                <button 
+                    data-testid="test-todo-edit-button" 
+                    aria-label="Edit task: Refine Brand Identity"
+                    onclick="console.log('Edit clicked')"
+                    class="p-2.5 hover:bg-gray-100 rounded-full text-gray-500 transition-colors"
+                >
+                    <i class="fa-solid fa-pencil" aria-hidden="true"></i>
                 </button>
-                <button data-testid="test-todo-delete-button" aria-label="Delete Task" class="p-2 hover:bg-red-50 rounded-full text-gray-400 hover:text-red-500 transition-colors">
-                    <i class="fa-solid fa-trash"></i>
+                <button 
+                    data-testid="test-todo-delete-button" 
+                    aria-label="Delete task: Refine Brand Identity"
+                    onclick="alert('Delete clicked')"
+                    class="p-2.5 hover:bg-red-50 rounded-full text-gray-500 hover:text-red-600 transition-colors"
+                >
+                    <i class="fa-solid fa-trash-can" aria-hidden="true"></i>
                 </button>
             </div>
         </div>
 
-        <div class="flex items-start gap-4 mb-4">
-            <div class="relative flex items-center mt-1">
+        <div class="flex items-start gap-4 mb-6">
+            <div class="flex items-center h-7">
                 <input 
                     type="checkbox" 
-                    id="todo-complete" 
+                    id="todo-complete-toggle" 
                     data-testid="test-todo-complete-toggle"
-                    class="peer appearance-none w-7 h-7 border-2 border-gray-300 rounded-lg checked:bg-[#1a4d2e] checked:border-[#1a4d2e] transition-all cursor-pointer"
+                    class="w-6 h-6 rounded border-gray-300 text-[#1a4d2e] cursor-pointer"
+                    onchange="handleToggle(this)"
                 >
-                <i class="fa-solid fa-check absolute text-white text-xs left-1.5 pointer-events-none opacity-0 peer-checked:opacity-100"></i>
+                <label for="todo-complete-toggle" class="sr-only">Mark task as complete</label>
             </div>
-            <div>
-                <h2 data-testid="test-todo-title" class="text-2xl font-bold text-gray-800 leading-tight peer-checked:line-through">
+            
+            <div class="flex-1">
+                <h2 
+                    id="task-title"
+                    data-testid="test-todo-title" 
+                    class="text-xl font-bold text-gray-900 leading-tight mb-2"
+                >
                     Refine Brand Identity
                 </h2>
-                <p data-testid="test-todo-description" class="text-gray-500 mt-1 text-sm leading-relaxed">
-                    Update the color palette and typography scales for the new dashboard components to match the "Arc Company" aesthetic.
+                <p 
+                    data-testid="test-todo-description" 
+                    class="text-gray-600 text-sm leading-relaxed"
+                >
+                    Finalize the typography scales and primary color shades for the dashboard.
                 </p>
             </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-4 py-4 border-y border-gray-50 my-6">
-            <div>
-                <p class="text-[10px] uppercase tracking-widest text-gray-400 font-bold mb-1">Due Date</p>
-                <time data-testid="test-todo-due-date" datetime="2026-04-18" class="text-sm font-semibold text-gray-700">
+        <div class="grid grid-cols-2 gap-4 py-5 border-y border-gray-100 mb-6">
+            <div class="space-y-1">
+                <span class="block text-[10px] uppercase font-bold text-gray-400 tracking-wider">Deadline</span>
+                <time 
+                    id="due-date-display"
+                    data-testid="test-todo-due-date" 
+                    datetime="2026-04-18" 
+                    class="text-sm font-semibold text-gray-700 block"
+                >
                     Due April 18, 2026
                 </time>
             </div>
-            <div>
-                <p class="text-[10px] uppercase tracking-widest text-gray-400 font-bold mb-1">Remaining</p>
-                <p data-testid="test-todo-time-remaining" class="text-sm font-semibold text-[#1a4d2e]">
-                    Calculating...
-                </p>
+            <div class="space-y-1">
+                <span class="block text-[10px] uppercase font-bold text-gray-400 tracking-wider">Countdown</span>
+                <time 
+                    id="time-remaining-display"
+                    data-testid="test-todo-time-remaining" 
+                    aria-live="polite"
+                    class="text-sm font-semibold text-[#1a4d2e] block"
+                >
+                    Due in 4 days
+                </time>
             </div>
         </div>
 
-        <div class="flex flex-wrap items-center justify-between gap-4">
-            <ul data-testid="test-todo-tags" role="list" class="flex flex-wrap gap-2">
-                <li data-testid="test-todo-tag-design" class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-xs font-medium">#Design</li>
-                <li data-testid="test-todo-tag-branding" class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-xs font-medium">#Branding</li>
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <ul 
+                data-testid="test-todo-tags" 
+                role="list" 
+                class="flex flex-wrap gap-2"
+                aria-label="Task tags"
+            >
+                <li data-testid="test-todo-tag-design" class="px-2.5 py-1 bg-gray-100 text-gray-700 rounded-md text-[11px] font-medium border border-gray-200">Design</li>
+                <li data-testid="test-todo-tag-urgent" class="px-2.5 py-1 bg-gray-100 text-gray-700 rounded-md text-[11px] font-medium border border-gray-200">Urgent</li>
             </ul>
+
             <div class="flex items-center gap-2">
-                <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                <span data-testid="test-todo-status" class="text-xs font-bold text-gray-500 uppercase tracking-tighter">In Progress</span>
+                <span 
+                    id="status-dot"
+                    class="w-2.5 h-2.5 rounded-full bg-green-500" 
+                    aria-hidden="true"
+                ></span>
+                <span 
+                    id="status-text"
+                    data-testid="test-todo-status" 
+                    class="text-xs font-bold text-gray-500 uppercase tracking-wide"
+                >
+                    In Progress
+                </span>
             </div>
         </div>
     </article>
 
     <script>
-        // Target date for calculation (4 days from now)
-        const dueDate = new Date();
-        dueDate.setDate(dueDate.getDate() + 4);
-        dueDate.setHours(dueDate.getHours() + 2);
+        // Set a future date (4 days from now)
+        const targetDate = new Date();
+        targetDate.setDate(targetDate.getDate() + 4);
+        targetDate.setHours(targetDate.getHours() + 2);
 
-        function updateRemainingTime() {
+        function updateTimestamps() {
             const now = new Date();
-            const diff = dueDate - now;
-
-            const timeEl = document.querySelector('[data-testid="test-todo-time-remaining"]');
-            const dateEl = document.querySelector('[data-testid="test-todo-due-date"]');
+            const diff = targetDate - now;
+            
+            const timeDisplay = document.getElementById('time-remaining-display');
+            const dateDisplay = document.getElementById('due-date-display');
 
             // Format Due Date
-            const options = { month: 'short', day: 'numeric', year: 'numeric' };
-            dateEl.innerText = `Due ${dueDate.toLocaleDateString('en-US', options)}`;
-            dateEl.setAttribute('datetime', dueDate.toISOString().split('T')[0]);
+            const options = { month: 'long', day: 'numeric', year: 'numeric' };
+            dateDisplay.innerText = `Due ${targetDate.toLocaleDateString('en-US', options)}`;
+            dateDisplay.setAttribute('datetime', targetDate.toISOString());
 
+            // Handle Countdown logic
             if (diff <= 0) {
-                timeEl.innerText = "Overdue";
-                timeEl.classList.replace('text-[#1a4d2e]', 'text-red-500');
-                return;
-            }
-
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-
-            if (days > 0) {
-                timeEl.innerText = `Due in ${days} day${days > 1 ? 's' : ''}`;
+                timeDisplay.innerText = "Overdue";
+                timeDisplay.classList.replace('text-[#1a4d2e]', 'text-red-600');
             } else {
-                timeEl.innerText = `Due in ${hours} hour${hours > 1 ? 's' : ''}`;
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                
+                if (days > 0) {
+                    timeDisplay.innerText = `Due in ${days} day${days > 1 ? 's' : ''}`;
+                } else {
+                    timeDisplay.innerText = `Due in ${hours} hour${hours > 1 ? 's' : ''}`;
+                }
             }
         }
 
-        // Run every 30 seconds
-        setInterval(updateRemainingTime, 30000);
-        updateRemainingTime();
+        function handleToggle(checkbox) {
+            const statusText = document.getElementById('status-text');
+            const statusDot = document.getElementById('status-dot');
+            
+            if (checkbox.checked) {
+                statusText.innerText = "Done";
+                statusDot.classList.replace('bg-green-500', 'bg-gray-400');
+            } else {
+                statusText.innerText = "In Progress";
+                statusDot.classList.replace('bg-gray-400', 'bg-green-500');
+            }
+        }
+
+        // Initialize and Update every minute
+        updateTimestamps();
+        setInterval(updateTimestamps, 60000);
     </script>
 </body>
 </html>
