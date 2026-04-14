@@ -3,203 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accessible Task Component</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Testable Todo Card</title>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/dist/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-        
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background-color: #f8faf9; 
-        }
-
-        /* Focus Styles for Accessibility */
-        :focus-visible {
-            outline: 3px solid #1a4d2e;
-            outline-offset: 2px;
-        }
-
-        .todo-card {
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        /* Semantic Strike-through when checked */
-        input:checked ~ div h2 {
-            text-decoration: line-through;
-            color: #9ca3af;
-        }
-    </style>
 </head>
-<body class="flex items-center justify-center min-h-screen p-4">
+<body>
 
-    <article 
-        data-testid="test-todo-card" 
-        class="todo-card bg-white rounded-[1.5rem] p-6 w-full max-w-[480px] shadow-sm border border-gray-100"
-        role="region" 
-        aria-labelledby="task-title"
-    >
-        <div class="flex justify-between items-center mb-6">
-            <span 
-                data-testid="test-todo-priority" 
-                aria-label="Priority level: High"
-                class="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest bg-orange-50 text-orange-700 border border-orange-100"
-            >
-                High Priority
-            </span>
-            
-            <div class="flex gap-1">
-                <button 
-                    data-testid="test-todo-edit-button" 
-                    aria-label="Edit task: Refine Brand Identity"
-                    onclick="console.log('Edit clicked')"
-                    class="p-2.5 hover:bg-gray-100 rounded-full text-gray-500 transition-colors"
-                >
-                    <i class="fa-solid fa-pencil" aria-hidden="true"></i>
+    <article data-testid="test-todo-card" class="todo-card">
+        <header class="card-header">
+            <span data-testid="test-todo-priority" class="priority-badge">High</span>
+            <div class="action-buttons">
+                <button data-testid="test-todo-edit-button" class="icon-btn" aria-label="Edit Task">
+                    <i class="fa-solid fa-pen"></i>
                 </button>
-                <button 
-                    data-testid="test-todo-delete-button" 
-                    aria-label="Delete task: Refine Brand Identity"
-                    onclick="alert('Delete clicked')"
-                    class="p-2.5 hover:bg-red-50 rounded-full text-gray-500 hover:text-red-600 transition-colors"
-                >
-                    <i class="fa-solid fa-trash-can" aria-hidden="true"></i>
+                <button data-testid="test-todo-delete-button" class="icon-btn" aria-label="Delete Task">
+                    <i class="fa-solid fa-trash"></i>
                 </button>
             </div>
-        </div>
+        </header>
 
-        <div class="flex items-start gap-4 mb-6">
-            <div class="flex items-center h-7">
-                <input 
-                    type="checkbox" 
-                    id="todo-complete-toggle" 
-                    data-testid="test-todo-complete-toggle"
-                    class="w-6 h-6 rounded border-gray-300 text-[#1a4d2e] cursor-pointer"
-                    onchange="handleToggle(this)"
-                >
-                <label for="todo-complete-toggle" class="sr-only">Mark task as complete</label>
+        <section class="card-body">
+            <div class="checkbox-container">
+                <input type="checkbox" id="task-toggle" data-testid="test-todo-complete-toggle">
             </div>
-            
-            <div class="flex-1">
-                <h2 
-                    id="task-title"
-                    data-testid="test-todo-title" 
-                    class="text-xl font-bold text-gray-900 leading-tight mb-2"
-                >
-                    Refine Brand Identity
-                </h2>
-                <p 
-                    data-testid="test-todo-description" 
-                    class="text-gray-600 text-sm leading-relaxed"
-                >
-                    Finalize the typography scales and primary color shades for the dashboard.
-                </p>
+            <div>
+                <h2 id="task-title" data-testid="test-todo-title" class="task-title">Build Credence Pay MVP</h2>
+                <p data-testid="test-todo-description" class="task-desc">Draft the API contract for the payment verification layer and finalize the user journey maps.</p>
             </div>
-        </div>
+        </section>
 
-        <div class="grid grid-cols-2 gap-4 py-5 border-y border-gray-100 mb-6">
-            <div class="space-y-1">
-                <span class="block text-[10px] uppercase font-bold text-gray-400 tracking-wider">Deadline</span>
-                <time 
-                    id="due-date-display"
-                    data-testid="test-todo-due-date" 
-                    datetime="2026-04-18" 
-                    class="text-sm font-semibold text-gray-700 block"
-                >
-                    Due April 18, 2026
-                </time>
+        <section class="metadata-grid">
+            <div>
+                <span class="meta-label">Deadline</span>
+                <time data-testid="test-todo-due-date" class="meta-value">Due April 20, 2026</time>
             </div>
-            <div class="space-y-1">
-                <span class="block text-[10px] uppercase font-bold text-gray-400 tracking-wider">Countdown</span>
-                <time 
-                    id="time-remaining-display"
-                    data-testid="test-todo-time-remaining" 
-                    aria-live="polite"
-                    class="text-sm font-semibold text-[#1a4d2e] block"
-                >
-                    Due in 4 days
-                </time>
+            <div>
+                <span class="meta-label">Countdown</span>
+                <span data-testid="test-todo-time-remaining" class="meta-value time-remaining">Due in 6 days</span>
             </div>
-        </div>
+        </section>
 
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <ul 
-                data-testid="test-todo-tags" 
-                role="list" 
-                class="flex flex-wrap gap-2"
-                aria-label="Task tags"
-            >
-                <li data-testid="test-todo-tag-design" class="px-2.5 py-1 bg-gray-100 text-gray-700 rounded-md text-[11px] font-medium border border-gray-200">Design</li>
-                <li data-testid="test-todo-tag-urgent" class="px-2.5 py-1 bg-gray-100 text-gray-700 rounded-md text-[11px] font-medium border border-gray-200">Urgent</li>
+        <footer class="card-footer">
+            <ul data-testid="test-todo-tags" class="tag-list" role="list">
+                <li data-testid="test-todo-tag-work" class="tag">#work</li>
+                <li data-testid="test-todo-tag-urgent" class="tag">#urgent</li>
             </ul>
-
-            <div class="flex items-center gap-2">
-                <span 
-                    id="status-dot"
-                    class="w-2.5 h-2.5 rounded-full bg-green-500" 
-                    aria-hidden="true"
-                ></span>
-                <span 
-                    id="status-text"
-                    data-testid="test-todo-status" 
-                    class="text-xs font-bold text-gray-500 uppercase tracking-wide"
-                >
-                    In Progress
-                </span>
+            <div class="status-indicator">
+                <div class="status-dot"></div>
+                <span data-testid="test-todo-status">In Progress</span>
             </div>
-        </div>
+        </footer>
     </article>
 
-    <script>
-        // Set a future date (4 days from now)
-        const targetDate = new Date();
-        targetDate.setDate(targetDate.getDate() + 4);
-        targetDate.setHours(targetDate.getHours() + 2);
-
-        function updateTimestamps() {
-            const now = new Date();
-            const diff = targetDate - now;
-            
-            const timeDisplay = document.getElementById('time-remaining-display');
-            const dateDisplay = document.getElementById('due-date-display');
-
-            // Format Due Date
-            const options = { month: 'long', day: 'numeric', year: 'numeric' };
-            dateDisplay.innerText = `Due ${targetDate.toLocaleDateString('en-US', options)}`;
-            dateDisplay.setAttribute('datetime', targetDate.toISOString());
-
-            // Handle Countdown logic
-            if (diff <= 0) {
-                timeDisplay.innerText = "Overdue";
-                timeDisplay.classList.replace('text-[#1a4d2e]', 'text-red-600');
-            } else {
-                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-                
-                if (days > 0) {
-                    timeDisplay.innerText = `Due in ${days} day${days > 1 ? 's' : ''}`;
-                } else {
-                    timeDisplay.innerText = `Due in ${hours} hour${hours > 1 ? 's' : ''}`;
-                }
-            }
-        }
-
-        function handleToggle(checkbox) {
-            const statusText = document.getElementById('status-text');
-            const statusDot = document.getElementById('status-dot');
-            
-            if (checkbox.checked) {
-                statusText.innerText = "Done";
-                statusDot.classList.replace('bg-green-500', 'bg-gray-400');
-            } else {
-                statusText.innerText = "In Progress";
-                statusDot.classList.replace('bg-gray-400', 'bg-green-500');
-            }
-        }
-
-        // Initialize and Update every minute
-        updateTimestamps();
-        setInterval(updateTimestamps, 60000);
-    </script>
 </body>
 </html>
