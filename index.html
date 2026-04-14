@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High-Fidelity Todo Card</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/dist/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f3f5f4; }
+        .card-shadow { box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05); }
+        .custom-checkbox:checked + label .check-icon { display: block; }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-6">
+
+    <article 
+        data-testid="test-todo-card" 
+        class="bg-white rounded-[2rem] p-8 w-full max-w-md card-shadow border border-gray-100 transition-all hover:scale-[1.01]"
+    >
+        <div class="flex justify-between items-center mb-6">
+            <span 
+                data-testid="test-todo-priority" 
+                class="px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-orange-100 text-orange-600"
+            >
+                High Priority
+            </span>
+            <div class="flex gap-2">
+                <button data-testid="test-todo-edit-button" aria-label="Edit Task" class="p-2 hover:bg-gray-100 rounded-full text-gray-400 transition-colors">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+                <button data-testid="test-todo-delete-button" aria-label="Delete Task" class="p-2 hover:bg-red-50 rounded-full text-gray-400 hover:text-red-500 transition-colors">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="flex items-start gap-4 mb-4">
+            <div class="relative flex items-center mt-1">
+                <input 
+                    type="checkbox" 
+                    id="todo-complete" 
+                    data-testid="test-todo-complete-toggle"
+                    class="peer appearance-none w-7 h-7 border-2 border-gray-300 rounded-lg checked:bg-[#1a4d2e] checked:border-[#1a4d2e] transition-all cursor-pointer"
+                >
+                <i class="fa-solid fa-check absolute text-white text-xs left-1.5 pointer-events-none opacity-0 peer-checked:opacity-100"></i>
+            </div>
+            <div>
+                <h2 data-testid="test-todo-title" class="text-2xl font-bold text-gray-800 leading-tight peer-checked:line-through">
+                    Refine Brand Identity
+                </h2>
+                <p data-testid="test-todo-description" class="text-gray-500 mt-1 text-sm leading-relaxed">
+                    Update the color palette and typography scales for the new dashboard components to match the "Arc Company" aesthetic.
+                </p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 py-4 border-y border-gray-50 my-6">
+            <div>
+                <p class="text-[10px] uppercase tracking-widest text-gray-400 font-bold mb-1">Due Date</p>
+                <time data-testid="test-todo-due-date" datetime="2026-04-18" class="text-sm font-semibold text-gray-700">
+                    Due April 18, 2026
+                </time>
+            </div>
+            <div>
+                <p class="text-[10px] uppercase tracking-widest text-gray-400 font-bold mb-1">Remaining</p>
+                <p data-testid="test-todo-time-remaining" class="text-sm font-semibold text-[#1a4d2e]">
+                    Calculating...
+                </p>
+            </div>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-between gap-4">
+            <ul data-testid="test-todo-tags" role="list" class="flex flex-wrap gap-2">
+                <li data-testid="test-todo-tag-design" class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-xs font-medium">#Design</li>
+                <li data-testid="test-todo-tag-branding" class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-xs font-medium">#Branding</li>
+            </ul>
+            <div class="flex items-center gap-2">
+                <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                <span data-testid="test-todo-status" class="text-xs font-bold text-gray-500 uppercase tracking-tighter">In Progress</span>
+            </div>
+        </div>
+    </article>
+
+    <script>
+        // Target date for calculation (4 days from now)
+        const dueDate = new Date();
+        dueDate.setDate(dueDate.getDate() + 4);
+        dueDate.setHours(dueDate.getHours() + 2);
+
+        function updateRemainingTime() {
+            const now = new Date();
+            const diff = dueDate - now;
+
+            const timeEl = document.querySelector('[data-testid="test-todo-time-remaining"]');
+            const dateEl = document.querySelector('[data-testid="test-todo-due-date"]');
+
+            // Format Due Date
+            const options = { month: 'short', day: 'numeric', year: 'numeric' };
+            dateEl.innerText = `Due ${dueDate.toLocaleDateString('en-US', options)}`;
+            dateEl.setAttribute('datetime', dueDate.toISOString().split('T')[0]);
+
+            if (diff <= 0) {
+                timeEl.innerText = "Overdue";
+                timeEl.classList.replace('text-[#1a4d2e]', 'text-red-500');
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+            if (days > 0) {
+                timeEl.innerText = `Due in ${days} day${days > 1 ? 's' : ''}`;
+            } else {
+                timeEl.innerText = `Due in ${hours} hour${hours > 1 ? 's' : ''}`;
+            }
+        }
+
+        // Run every 30 seconds
+        setInterval(updateRemainingTime, 30000);
+        updateRemainingTime();
+    </script>
+</body>
+</html>
