@@ -379,3 +379,33 @@ input[type="checkbox"] {
 .expand-btn[aria-expanded="true"] i {
     transform: rotate(180deg);
 }
+
+/* Expand/Collapse */
+.collapsible-container {
+    max-height: 3.6em; /* Roughly 2 lines of text */
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.collapsible-container.expanded {
+    max-height: 1000px; /* Large enough to fit any text */
+}
+
+/* Overdue Styling */
+.overdue-active #time-remaining {
+    color: #dc2626; /* Bright Red */
+    font-weight: bold;
+}
+
+.overdue-badge {
+    background-color: #fee2e2;
+    color: #991b1b;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-left: 5px;
+}
+
+.hidden { display: none !important; }

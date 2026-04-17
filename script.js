@@ -203,3 +203,67 @@ document.addEventListener("DOMContentLoaded", () => {
         checkDescriptionLength();
     
 });
+
+
+    // --- Elements ---
+    const expandToggle = document.getElementById("expand-toggle");
+    const collapsibleSection = document.getElementById("collapsible-section");
+    const timeRemainingDisplay = document.getElementById("time-remaining");
+    const overdueIndicator = document.getElementById("overdue-indicator");
+    const displayDate = document.getElementById("display-date");
+    const card = document.querySelector('[data-testid="test-todo-card"]');
+
+    // --- 1. Expand / Collapse Logic ---
+    expandToggle.addEventListener("click", () => {
+        const isExpanded = collapsibleSection.classList.toggle("expanded");
+        expandToggle.setAttribute("aria-expanded", isExpanded);
+        expandToggle.querySelector("span").textContent = isExpanded ? "Show Less" : "Show More";
+        expandToggle.querySelector("i").style.transform = isExpanded ? "rotate(180deg)" : "rotate(0deg)";
+    });
+
+    // --- 2. Time Management Logic ---
+    function updateCountdown() {
+        // If status is "Done", stop updating and show "Completed"
+        if (card.classList.contains("status-done")) {
+            timeRemainingDisplay.textContent = "Completed";
+            overdueIndicator.classList.add("hidden");
+            card.classList.remove("overdue-active");
+            return;
+        }
+
+        const deadline = new Date(displayDate.innerText);
+        const now = new Date();
+        const diff = deadline - now;
+        const absDiff = Math.abs(diff);
+
+        // Convert difference to units
+        const days = Math.floor(absDiff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((absDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((absDiff % (1000 * 60 * 60)) / (1000 * 60));
+
+        let timeText = "";
+        const isOverdue = diff < 0;
+
+        // Granular Time String Logic
+        if (days > 0) timeText = `Due in ${days} day${days > 1 ? 's' : ''}`;
+        else if (hours > 0) timeText = `Due in ${hours} hour${hours > 1 ? 's' : ''}`;
+        else timeText = `Due in ${minutes} minute${minutes > 1 ? 's' : ''}`;
+
+        if (isOverdue) {
+            // Replace "Due in" with "Overdue by"
+            timeText = timeText.replace("Due in", "Overdue by");
+            overdueIndicator.classList.remove("hidden");
+            card.classList.add("overdue-active");
+        } else {
+            overdueIndicator.classList.add("hidden");
+            card.classList.remove("overdue-active");
+        }
+
+        timeRemainingDisplay.textContent = timeText;
+    }
+
+    // Update every 30 seconds
+    setInterval(updateCountdown, 30000);
+    
+    // Initial calls
+    updateCountdown();

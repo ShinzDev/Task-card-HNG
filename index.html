@@ -48,9 +48,14 @@
             </section>
     
             <section class="metadata-grid">
-                <div>
+                <div class="date-info">
                     <span class="meta-label">Deadline</span>
                     <time id="display-date" data-testid="test-todo-due-date" class="meta-value">2026-04-20</time>
+                </div>
+                <div class="countdown-info">
+                    <span class="meta-label">Countdown</span>
+                    <span id="time-remaining" data-testid="test-todo-time-remaining" class="meta-value"></span>
+                    <span id="overdue-indicator" data-testid="test-todo-overdue-indicator" class="overdue-badge hidden">Overdue</span>
                 </div>
             </section>
                 
@@ -73,6 +78,7 @@
                     </div>
                 </footer>
             </section>
+            
         </div>
     
         <form id="todo-edit-form" data-testid="test-todo-edit-form" class="edit-form hidden">
