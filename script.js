@@ -204,27 +204,42 @@ document.addEventListener("DOMContentLoaded", () => {
     
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+    // --- 1. ELEMENT SELECTIONS ---
+    const card = document.querySelector('[data-testid="test-todo-card"]');
+    const viewMode = document.getElementById("todo-view-mode");
+    const editForm = document.getElementById("todo-edit-form");
 
-    // --- Elements ---
-    const expandToggle = document.getElementById("expand-toggle");
-    const collapsibleSection = document.getElementById("collapsible-section");
+    // Display elements
+    const displayTitle = document.getElementById("display-title");
+    const displayDesc = document.getElementById("display-desc");
+    const displayPriority = document.getElementById("display-priority");
+    const displayDate = document.getElementById("display-date");
+    const statusText = document.getElementById("status-text");
     const timeRemainingDisplay = document.getElementById("time-remaining");
     const overdueIndicator = document.getElementById("overdue-indicator");
-    const displayDate = document.getElementById("display-date");
-    const card = document.querySelector('[data-testid="test-todo-card"]');
 
-    // --- 1. Expand / Collapse Logic ---
-    expandToggle.addEventListener("click", () => {
-        const isExpanded = collapsibleSection.classList.toggle("expanded");
-        expandToggle.setAttribute("aria-expanded", isExpanded);
-        expandToggle.querySelector("span").textContent = isExpanded ? "Show Less" : "Show More";
-        expandToggle.querySelector("i").style.transform = isExpanded ? "rotate(180deg)" : "rotate(0deg)";
-    });
+    // Controls
+    const checkbox = document.getElementById("task-toggle");
+    const statusControl = document.getElementById("status-control");
+    const expandToggle = document.getElementById("expand-toggle");
+    const collapsibleSection = document.getElementById("collapsible-section");
 
-    // --- 2. Time Management Logic ---
+    // Form Inputs
+    const inputTitle = document.getElementById("edit-title");
+    const inputDesc = document.getElementById("edit-desc");
+    const inputPriority = document.getElementById("edit-priority");
+    const inputDate = document.getElementById("edit-date");
+
+    // Buttons
+    const editBtn = document.getElementById("edit-btn");
+    const saveBtn = document.getElementById("save-btn");
+    const cancelBtn = document.getElementById("cancel-btn");
+
+    // --- 2. TIME MANAGEMENT LOGIC ---
     function updateCountdown() {
-        // If status is "Done", stop updating and show "Completed"
-        if (card.classList.contains("status-done")) {
+        // If status is "Done", show Completed and exit
+        if (statusControl.value === "Done") {
             timeRemainingDisplay.textContent = "Completed";
             overdueIndicator.classList.add("hidden");
             card.classList.remove("overdue-active");
@@ -236,34 +251,99 @@ document.addEventListener("DOMContentLoaded", () => {
         const diff = deadline - now;
         const absDiff = Math.abs(diff);
 
-        // Convert difference to units
+        if (isNaN(deadline)) {
+            timeRemainingDisplay.textContent = "Invalid Date";
+            return;
+        }
+
         const days = Math.floor(absDiff / (1000 * 60 * 60 * 24));
         const hours = Math.floor((absDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((absDiff % (1000 * 60 * 60)) / (1000 * 60));
 
         let timeText = "";
-        const isOverdue = diff < 0;
+        if (days > 0) timeText = `${days} day${days > 1 ? 's' : ''}`;
+        else if (hours > 0) timeText = `${hours} hour${hours > 1 ? 's' : ''}`;
+        else timeText = `${minutes} minute${minutes > 1 ? 's' : ''}`;
 
-        // Granular Time String Logic
-        if (days > 0) timeText = `Due in ${days} day${days > 1 ? 's' : ''}`;
-        else if (hours > 0) timeText = `Due in ${hours} hour${hours > 1 ? 's' : ''}`;
-        else timeText = `Due in ${minutes} minute${minutes > 1 ? 's' : ''}`;
-
-        if (isOverdue) {
-            // Replace "Due in" with "Overdue by"
-            timeText = timeText.replace("Due in", "Overdue by");
+        if (diff < 0) {
+            timeRemainingDisplay.textContent = `Overdue by ${timeText}`;
             overdueIndicator.classList.remove("hidden");
             card.classList.add("overdue-active");
         } else {
+            timeRemainingDisplay.textContent = `Due in ${timeText}`;
             overdueIndicator.classList.add("hidden");
             card.classList.remove("overdue-active");
         }
-
-        timeRemainingDisplay.textContent = timeText;
     }
 
-    // Update every 30 seconds
-    setInterval(updateCountdown, 30000);
-    
-    // Initial calls
+    // --- 3. STATUS & PRIORITY SYNC ---
+    function updateStatus(newStatus) {
+        statusControl.value = newStatus;
+        statusText.innerText = newStatus;
+        checkbox.checked = (newStatus === "Done");
+
+        card.classList.remove("status-pending", "status-in-progress", "status-done");
+        card.classList.add(`status-${newStatus.toLowerCase().replace(" ", "-")}`);
+        
+        // Always refresh time when status changes
+        updateCountdown();
+    }
+
+    function updatePriorityUI(priority) {
+        displayPriority.innerText = priority;
+        card.classList.remove("priority-low", "priority-medium", "priority-high");
+        card.classList.add(`priority-${priority.toLowerCase()}`);
+    }
+
+    // --- 4. EVENT LISTENERS ---
+
+    // Toggle Expand/Collapse
+    expandToggle.addEventListener("click", () => {
+        const isExpanded = collapsibleSection.classList.toggle("expanded");
+        expandToggle.setAttribute("aria-expanded", isExpanded);
+        expandToggle.querySelector("span").textContent = isExpanded ? "Show Less" : "Show More";
+    });
+
+    // Status Interactions
+    checkbox.addEventListener("change", () => {
+        updateStatus(checkbox.checked ? "Done" : "Pending");
+    });
+
+    statusControl.addEventListener("change", (e) => {
+        updateStatus(e.target.value);
+    });
+
+    // Edit Mode Toggles
+    editBtn.addEventListener("click", () => {
+        inputTitle.value = displayTitle.innerText;
+        inputDesc.value = displayDesc.innerText;
+        inputPriority.value = displayPriority.innerText;
+        inputDate.value = displayDate.innerText;
+
+        viewMode.classList.add("hidden");
+        editForm.classList.remove("hidden");
+        inputTitle.focus();
+    });
+
+    saveBtn.addEventListener("click", () => {
+        displayTitle.innerText = inputTitle.value;
+        displayDesc.innerText = inputDesc.value;
+        displayDate.innerText = inputDate.value;
+        
+        updatePriorityUI(inputPriority.value);
+        updateCountdown(); // Refresh time with the new date
+        
+        editForm.classList.add("hidden");
+        viewMode.classList.remove("hidden");
+    });
+
+    cancelBtn.addEventListener("click", () => {
+        editForm.classList.add("hidden");
+        viewMode.classList.remove("hidden");
+    });
+
+    // --- 5. INITIALIZE ---
+    setInterval(updateCountdown, 30000); // Heartbeat every 30s
     updateCountdown();
+    updatePriorityUI(displayPriority.innerText);
+});
