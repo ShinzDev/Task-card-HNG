@@ -80,3 +80,47 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    // Select elements
+    const card = document.querySelector('[data-testid="test-todo-card"]');
+    const checkbox = document.getElementById("task-toggle");
+    const statusControl = document.getElementById("status-control");
+    const statusText = document.getElementById("status-text");
+
+    // FUNCTION: Sync all status indicators
+    function updateStatus(newStatus) {
+        // 1. Update the Dropdown
+        statusControl.value = newStatus;
+        
+        // 2. Update the Display Text
+        statusText.innerText = newStatus;
+
+        // 3. Update the Checkbox
+        checkbox.checked = (newStatus === "Done");
+
+        // 4. Update Visual Classes
+        if (newStatus === "Done") {
+            card.classList.add("status-done");
+        } else {
+            card.classList.remove("status-done");
+        }
+    }
+
+    // EVENT: Toggle Checkbox
+    checkbox.addEventListener("change", () => {
+        if (checkbox.checked) {
+            updateStatus("Done");
+        } else {
+            // Requirement: If unchecked after Done -> revert to "Pending"
+            updateStatus("Pending");
+        }
+    });
+
+    // EVENT: Change Status Dropdown
+    statusControl.addEventListener("change", (e) => {
+        updateStatus(e.target.value);
+    });
+
+    // --- Keep your existing Edit Mode logic below ---
+});
