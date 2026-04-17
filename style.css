@@ -20,13 +20,13 @@ body {
   font-family: 'Inter', -apple-system, sans-serif;
 }
 
-/* Card Root */
+/* Card Root - Tightened up for a sleeker profile */
 .todo-card {
   background: white;
-  border-radius: 24px;
-  padding: 24px;
+  border-radius: 16px;
+  padding: 20px;
   width: 100%;
-  max-width: 450px;
+  max-width: 400px; 
   border: 1px solid var(--border-color);
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
   transition: transform 0.2s ease;
@@ -34,11 +34,11 @@ body {
 
 /* Priority Badge */
 .priority-badge {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  padding: 6px 12px;
+  padding: 4px 10px;
   border-radius: 999px;
   background-color: var(--high-priority-bg);
   color: var(--high-priority);
@@ -50,26 +50,27 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .action-buttons {
   display: flex;
-  gap: 8px;
+  gap: 4px;
 }
 
 .icon-btn {
   background: none;
   border: none;
-  padding: 8px;
+  padding: 6px;
   border-radius: 50%;
   cursor: pointer;
   color: var(--text-muted);
-  transition: background 0.2s;
+  transition: background 0.2s, color 0.2s;
 }
 
 .icon-btn:hover {
   background-color: #f3f4f6;
+  color: var(--text-main);
 }
 
 .icon-btn:focus-visible {
@@ -80,32 +81,33 @@ body {
 /* Content Section */
 .card-body {
   display: flex;
-  gap: 16px;
-  margin-bottom: 24px;
+  gap: 12px;
+  margin-bottom: 20px;
+  align-items: flex-start;
 }
 
 .checkbox-container {
-  padding-top: 4px;
+  padding-top: 2px;
 }
 
 input[type="checkbox"] {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   accent-color: var(--primary-green);
   cursor: pointer;
 }
 
 .task-title {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
-  margin: 0 0 8px 0;
+  margin: 0 0 4px 0;
   color: var(--text-main);
 }
 
 .task-desc {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text-muted);
-  line-height: 1.5;
+  line-height: 1.4;
   margin: 0;
 }
 
@@ -113,10 +115,10 @@ input[type="checkbox"] {
 .metadata-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  padding: 16px 0;
+  padding: 12px 0;
   border-top: 1px solid #f3f4f6;
   border-bottom: 1px solid #f3f4f6;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .meta-label {
@@ -129,103 +131,27 @@ input[type="checkbox"] {
 }
 
 .meta-value {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   color: #374151;
 }
 
-.time-remaining {
-  color: var(--primary-green);
-}
-
-/* Tags & Footer */
-.card-footer {
+/* Tags Section (Replacing Tailwind) */
+.tag-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-}
-
-.tag-list {
+  gap: 8px;
   list-style: none;
   padding: 0;
   margin: 0;
-  display: flex;
-  gap: 8px;
 }
 
-.tag {
-  font-size: 11px;
-  font-weight: 500;
-  background: #f3f4f6;
+.tag-item {
   padding: 4px 10px;
-  border-radius: 6px;
-  color: #4b5563;
-}
-
-.status-indicator {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-
-.status-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: #10b981;
-}
-
-/* Responsiveness */
-@media (max-width: 400px) {
-  .metadata-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-}
-
-.hidden {
-    display: none !important;
-}
-.edit-name{
-    text-align: center;
-}
-
-.edit-form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 15px;
-}
-
-.edit-input {
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-/* Container for the tags */
-[data-testid="test-todo-tags"] {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  list-style: none; /* Removes bullet points */
-  padding: 0;
-  margin: 0;
-}
-
-/* Individual tag styling */
-[data-testid^="test-todo-tag-"] {
-  padding: 4px 10px;
-  background-color: #f3f4f6; /* bg-gray-100 */
-  color: #374151;            /* text-gray-700 */
-  border: 1px solid #e5e7eb; /* border-gray-200 */
-  border-radius: 6px;        /* rounded-md */
+  background-color: #f3f4f6; 
+  color: #374151;            
+  border: 1px solid #e5e7eb; 
+  border-radius: 6px;        
   font-size: 11px;
   font-weight: 500;
   display: inline-flex;
@@ -234,9 +160,151 @@ input[type="checkbox"] {
   cursor: default;
 }
 
-/* Optional: Slight hover effect to make it feel "alive" */
-[data-testid^="test-todo-tag-"]:hover {
+.tag-item:hover {
   background-color: #e5e7eb;
   border-color: #d1d5db;
   transform: translateY(-1px);
+}
+
+/* Footer & Status Container */
+.card-footer {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.status-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.status-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* Status Text Badge */
+#status-text {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: #f3f4f6;
+  color: #4b5563;
+  margin-right: auto; /* Pushes the dropdown to the far right */
+}
+
+/* Dynamic Status Colors */
+.todo-card.status-in-progress #status-text {
+  background: #fef08a;
+  color: #1e40af;
+}
+
+.todo-card.status-done #status-text {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+/* Modern Select Styling */
+.status-select {
+  padding: 4px 8px;
+  font-size: 0.8rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  background-color: white;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.status-select:focus {
+  border-color: #3b82f6;
+}
+
+/* The "Done" Visual State */
+.todo-card.status-done .task-title {
+  text-decoration: line-through;
+  color: #9ca3af;
+}
+
+.todo-card.status-done .task-desc {
+  opacity: 0.6;
+}
+
+.todo-card.status-done .card-body {
+  transition: all 0.3s ease;
+}
+
+/* Edit Mode Forms */
+.hidden {
+  display: none !important;
+}
+
+.edit-name {
+  text-align: center;
+  font-size: 18px;
+  margin-top: 0;
+  color: var(--text-main);
+}
+
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.edit-form label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: -8px;
+}
+
+.edit-input {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.edit-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.save-btn, .cancel-btn {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.save-btn {
+  background-color: var(--primary-green);
+  color: white;
+}
+
+.save-btn:hover {
+  background-color: #143d24;
+}
+
+.cancel-btn {
+  background-color: #f3f4f6;
+  color: var(--text-main);
+}
+
+.cancel-btn:hover {
+  background-color: #e5e7eb;
 }
