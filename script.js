@@ -162,4 +162,44 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // INITIALIZE: Run once on load to set the default style
     updatePriorityUI(displayPriority.innerText);
+    
+    const expandToggle = document.getElementById("expand-toggle");
+        const collapsibleSection = document.getElementById("collapsible-section");
+        const displayDesc = document.getElementById("display-desc");
+    
+        // FUNCTION: Toggle Expand/Collapse
+        function toggleDescription() {
+            const isCollapsed = collapsibleSection.classList.contains("collapsed");
+            
+            if (isCollapsed) {
+                collapsibleSection.classList.remove("collapsed");
+                collapsibleSection.style.maxHeight = collapsibleSection.scrollHeight + "px";
+                expandToggle.querySelector("span").innerText = "Show Less";
+                expandToggle.setAttribute("aria-expanded", "true");
+            } else {
+                collapsibleSection.classList.add("collapsed");
+                collapsibleSection.style.maxHeight = "40px"; // Match your CSS
+                expandToggle.querySelector("span").innerText = "Show More";
+                expandToggle.setAttribute("aria-expanded", "false");
+            }
+        }
+    
+        // FUNCTION: Check if description is long enough to need a toggle
+        function checkDescriptionLength() {
+            // If the actual text height is small, hide the toggle button entirely
+            if (displayDesc.scrollHeight <= 42) { 
+                expandToggle.style.display = "none";
+                collapsibleSection.classList.remove("collapsed");
+            } else {
+                expandToggle.style.display = "flex";
+                collapsibleSection.classList.add("collapsed");
+            }
+        }
+    
+        // EVENT: Click Toggle
+        expandToggle.addEventListener("click", toggleDescription);
+    
+        // INITIALIZE: Check length on load
+        checkDescriptionLength();
+    
 });
