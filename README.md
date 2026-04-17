@@ -1,31 +1,52 @@
-# Task-card-HNG
 
+# Task-card-HNG — Stage 1A (Advanced)
 
-#  Testable Todo Item Card - Stage 0
+A stateful, interactive Todo Card component built with Vanilla JavaScript, featuring full CRUD (Update) capabilities, dynamic time management, and status synchronization.
 
-A high-fidelity, accessible, and test-ready Todo Item component designed for modern productivity applications.
+## What’s New (Evolution from Stage 0)
+
+Stage 1A transforms the "view-only" card into a functional micro-app. Key upgrades include:
+* **Interactive Edit Mode**: A full form toggle that allows users to modify the task title, description, priority, and deadline.
+* **Status Lifecycle**: A bi-directional sync between the checkbox and a status dropdown (Pending → In Progress → Done).
+* **Content Density Management**: An Expand/Collapse toggle for long descriptions to maintain a clean UI.
+* **Granular Time Logic**: A "heartbeat" timer that updates every 30 seconds, including "Overdue" detection and specific time-unit strings (e.g., "Due in 3 hours").
+
+---
+
+## Design Decisions
+
+* **Priority Accents**: To improve "glanceability," I implemented a **double-indicator system**:
+    * A **6px left-border accent** color-coded to the priority level.
+    * A **Priority Dot** indicator next to the badge for internal consistency.
+* **Visual State Feedback**: When a task is marked "Done," the card uses CSS filters (`grayscale`) and `opacity` changes to visually "recede," helping the user focus on active tasks.
+* **Contextual Buttons**: The "Show More" toggle only appears if the description exceeds 2 lines of text, preventing unnecessary UI clutter.
+* **State Management**: Used a **Centralized Sync Function** in JavaScript to ensure that changing the status dropdown immediately updates the checkbox and the countdown timer state.
+
+---
+
+##  Accessibility (A11y) Notes
+
+* **Focus Management**: When entering **Edit Mode**, the script automatically focuses the first input field. Upon saving or cancelling, focus is returned to the "Edit" button to assist keyboard and screen-reader navigation.
+* **ARIA States**: 
+    * `aria-expanded`: Dynamically updates on the description toggle.
+    * `aria-label`: Applied to all icon-only buttons (Pen, Trash, Check).
+* **Keyboard Accessible**: All interactive elements (status select, expand toggle, and form controls) are reachable via `Tab` and triggerable via `Enter`/`Space`.
+* **Semantic Transitions**: Used `<form>` for the edit state to ensure screen readers recognize the context shift from "content" to "input."
+
+---
+
+## Known Limitations
+
+* **Ephemeral State**: As this is a frontend-only task, changes are stored in the DOM. Refreshing the browser will reset the card to its default values (No `LocalStorage` persistence in this version).
+* **Single-Card Scope**: The logic is optimized for a single card. For a multi-card list, the ID-based selectors would need to be refactored to class-based relative selectors.
+* **Browser Date Parsing**: The countdown relies on the `display-date` text format. Manually entering an obscure date format in Edit Mode might result in an "Invalid Date" output.
+
+---
 
 ##  How to Run Locally
 
-1.  **Download** the `index.html` file.
-2.  **Open** the file in any modern web browser (Chrome, Safari, Firefox, Edge).
-3.  **No dependencies required**: Styles are handled via Tailwind CSS CDN.
+1. **Download** the `index.html`, `style.css`, and `script.js` files.
+2. **Open** `index.html` in a browser.
+3. **Test Edit Mode**: Click the Pen icon, change the date to the past to see the "Overdue" logic, or check the box to see the "Completed" state.
 
-##  Decisions & Architecture
-
-* **Design Philosophy**: Used a "Bento-grid" style card with a large corner radius (`2.5rem`) and a soft background palette (#F8FAF9) to ensure a premium startup aesthetic.
-* **Color Palette**: Primary action colors use deep forest greens (`#1a4d2e`) for high contrast and a professional feel.
-* **Dynamic Logic**: The "Time Remaining" uses a JavaScript interval that recalculates every 60 seconds relative to a dynamic `targetDate` object, ensuring the values stay accurate for the reviewer.
-* **Responsive Strategy**: Used a fluid grid. On mobile (<640px), the card takes full width with slightly reduced padding; on desktop, it caps at `480px`.
-
-##  Trade-offs
-
-* **Tailwind CDN**: While excellent for portability and rapid testing (Stage 0), a production build would use a compiled CSS version to avoid the tiny flash of unstyled content (FOUC) and improve performance.
-* **Vanilla JS over Framework**: I chose Vanilla JS to ensure zero setup time for the reviewer while meeting all logic requirements (checkbox toggles, dynamic time).
-
-##  Accessibility (A11y) Highlights
-
-* **Semantic Elements**: Used `<article>` for the card, `<time>` for dates, and `<button>` for actions.
-* **Aria Roles**: Added `aria-label` to icon-only buttons and the priority badge. 
-* **Aria-Live**: The time-remaining element is wrapped in `aria-live="polite"` to notify screen readers of updates if the time shifts while they are on the card.
-* **Focus Management**: Custom `focus-visible` rings ensure keyboard users can easily see their active element.
+---
