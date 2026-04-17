@@ -380,15 +380,13 @@ input[type="checkbox"] {
     transform: rotate(180deg);
 }
 
-/* Expand/Collapse */
 .collapsible-container {
-    max-height: 3.6em; /* Roughly 2 lines of text */
+    max-height: 40px; /* Adjust to fit 2 lines */
     overflow: hidden;
-    transition: max-height 0.3s ease-out;
+    transition: max-height 0.3s ease;
 }
-
 .collapsible-container.expanded {
-    max-height: 1000px; /* Large enough to fit any text */
+    max-height: 1000px; /* Big enough for any description */
 }
 
 /* Overdue Styling */
