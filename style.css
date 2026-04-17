@@ -208,3 +208,35 @@ input[type="checkbox"] {
     border: 1px solid #ccc;
     border-radius: 4px;
 }
+
+/* Container for the tags */
+[data-testid="test-todo-tags"] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none; /* Removes bullet points */
+  padding: 0;
+  margin: 0;
+}
+
+/* Individual tag styling */
+[data-testid^="test-todo-tag-"] {
+  padding: 4px 10px;
+  background-color: #f3f4f6; /* bg-gray-100 */
+  color: #374151;            /* text-gray-700 */
+  border: 1px solid #e5e7eb; /* border-gray-200 */
+  border-radius: 6px;        /* rounded-md */
+  font-size: 11px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.2s ease;
+  cursor: default;
+}
+
+/* Optional: Slight hover effect to make it feel "alive" */
+[data-testid^="test-todo-tag-"]:hover {
+  background-color: #e5e7eb;
+  border-color: #d1d5db;
+  transform: translateY(-1px);
+}
