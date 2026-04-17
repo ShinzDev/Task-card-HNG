@@ -344,3 +344,38 @@ input[type="checkbox"] {
 .priority-low { border-left-color: #10b981; }
 .priority-low .priority-dot { background-color: #10b981; }
 .priority-low .priority-badge { background-color: #d1fae5; color: #065f46; }
+
+/* Collapsible Container Logic */
+.collapsible-container {
+    transition: max-height 0.3s ease-out;
+    overflow: hidden;
+    position: relative;
+}
+
+/* When collapsed, limit height and fade the bottom */
+.collapsible-container.collapsed {
+    max-height: 40px; /* Adjust based on your font size (usually 2 lines) */
+}
+
+/* The button styling */
+.expand-btn {
+    background: none;
+    border: none;
+    color: #3b82f6;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 4px 0;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.expand-btn i {
+    transition: transform 0.3s ease;
+}
+
+/* Rotate icon when expanded */
+.expand-btn[aria-expanded="true"] i {
+    transform: rotate(180deg);
+}
