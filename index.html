@@ -5,17 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Testable Todo Card</title>
     <link rel="stylesheet" href="style.css">
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
 
-  
-    
     <article data-testid="test-todo-card" class="todo-card">
         <div id="todo-view-mode">
             <header class="card-header">
-                
                 <span data-testid="test-todo-priority" class="priority-badge">High</span>
                 <div class="action-buttons">
                     <button id="edit-btn" data-testid="test-todo-edit-button" class="icon-btn" aria-label="Edit Task">
@@ -31,8 +27,8 @@
                 <div class="checkbox-container">
                     <input type="checkbox" id="task-toggle" data-testid="test-todo-complete-toggle">
                 </div>
-                <div>
-                    <h2 id="display-title" data-testid="test-todo-title"  class="task-title">Build Credence Pay MVP</h2>
+                <div class="task-info">
+                    <h2 id="display-title" data-testid="test-todo-title" class="task-title">Build Credence Pay MVP</h2>
                     <p id="display-desc" data-testid="test-todo-description" class="task-desc">Draft the API contract...</p>
                 </div>
             </section>
@@ -43,10 +39,31 @@
                     <time id="display-date" data-testid="test-todo-due-date" class="meta-value">2026-04-20</time>
                 </div>
             </section>
+                
+            <section class="status-global">
+                <ul data-testid="test-todo-tags" role="list" class="tag-container" aria-label="Task tags">
+                    <li data-testid="test-todo-tag-design" class="tag-item">Design</li>
+                    <li data-testid="test-todo-tag-urgent" class="tag-item">Urgent</li>
+                </ul>
+                
+                <footer class="card-footer">
+                    <div class="status-container">
+                        <span class="status-label">Status:</span>
+                        <span id="status-text" data-testid="test-todo-status" class="status-value">Pending</span>
+                        
+                        <select id="status-control" data-testid="test-todo-status-control" class="status-select">
+                            <option value="Pending">Pending</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Done">Done</option>
+                        </select>
+                    </div>
+                </footer>
+            </section>
         </div>
     
         <form id="todo-edit-form" data-testid="test-todo-edit-form" class="edit-form hidden">
             <h1 class="edit-name">Edit Mode</h1>
+            
             <label for="edit-title">Title</label>
             <input type="text" id="edit-title" data-testid="test-todo-edit-title-input" class="edit-input">
     
@@ -72,3 +89,4 @@
     <script src="script.js"></script>
 </body>
 </html>
+
