@@ -9,10 +9,14 @@
 </head>
 <body>
 
-    <article data-testid="test-todo-card" class="todo-card">
+    <article data-testid="test-todo-card" class="todo-card priority-high">
         <div id="todo-view-mode">
             <header class="card-header">
-                <span data-testid="test-todo-priority" class="priority-badge">High</span>
+                <div class="priority-wrapper">
+                    <span id="priority-dot" data-testid="test-todo-priority-indicator" class="priority-dot"></span>
+                    <span id="display-priority" data-testid="test-todo-priority" class="priority-badge">High</span>
+                </div>
+
                 <div class="action-buttons">
                     <button id="edit-btn" data-testid="test-todo-edit-button" class="icon-btn" aria-label="Edit Task">
                         <i class="fa-solid fa-pen"></i>
@@ -29,7 +33,17 @@
                 </div>
                 <div class="task-info">
                     <h2 id="display-title" data-testid="test-todo-title" class="task-title">Build Credence Pay MVP</h2>
-                    <p id="display-desc" data-testid="test-todo-description" class="task-desc">Draft the API contract...</p>
+                    
+                    <div id="collapsible-section" data-testid="test-todo-collapsible-section" class="collapsible-container collapsed">
+                        <p id="display-desc" data-testid="test-todo-description" class="task-desc">
+                            Draft the API contract for the payment verification layer and finalize the user journey maps. This is an extremely long description designed to test the expand and collapse functionality of the advanced todo card component.
+                        </p>
+                    </div>
+                    
+                    <button id="expand-toggle" data-testid="test-todo-expand-toggle" class="expand-btn" aria-expanded="false">
+                        <span>Show More</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
                 </div>
             </section>
     
@@ -89,4 +103,3 @@
     <script src="script.js"></script>
 </body>
 </html>
-

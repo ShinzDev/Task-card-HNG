@@ -308,3 +308,39 @@ input[type="checkbox"] {
 .cancel-btn:hover {
   background-color: #e5e7eb;
 }
+
+/* Base Card Accent */
+.todo-card {
+    border-left: 6px solid transparent; 
+    transition: all 0.3s ease;
+    /* Other card styles like background, shadow, etc */
+}
+
+/* Priority Dot */
+.priority-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.priority-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* HIGH PRIORITY */
+.priority-high { border-left-color: #ef4444; }
+.priority-high .priority-dot { background-color: #ef4444; }
+.priority-high .priority-badge { background-color: #fee2e2; color: #991b1b; }
+
+/* MEDIUM PRIORITY */
+.priority-medium { border-left-color: #f59e0b; }
+.priority-medium .priority-dot { background-color: #f59e0b; }
+.priority-medium .priority-badge { background-color: #fef3c7; color: #92400e; }
+
+/* LOW PRIORITY */
+.priority-low { border-left-color: #10b981; }
+.priority-low .priority-dot { background-color: #10b981; }
+.priority-low .priority-badge { background-color: #d1fae5; color: #065f46; }

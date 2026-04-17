@@ -124,3 +124,42 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- Keep your existing Edit Mode logic below ---
 });
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    // Elements
+    const card = document.querySelector('[data-testid="test-todo-card"]');
+    const displayPriority = document.getElementById("display-priority");
+    const inputPriority = document.getElementById("edit-priority");
+    const saveBtn = document.getElementById("save-btn");
+
+    /**
+     * Updates the Card UI based on the priority level
+     * @param {string} priority - "Low", "Medium", or "High"
+     */
+    function updatePriorityUI(priority) {
+        // Update display text
+        displayPriority.innerText = priority;
+
+        // Clean up old classes
+        card.classList.remove("priority-low", "priority-medium", "priority-high");
+
+        // Add new class based on selection
+        const priorityClass = `priority-${priority.toLowerCase()}`;
+        card.classList.add(priorityClass);
+    }
+
+    // Trigger on Save
+    saveBtn.addEventListener("click", () => {
+        // ... (your existing title/desc save logic)
+        
+        const newPriority = inputPriority.value;
+        updatePriorityUI(newPriority);
+
+        // Close edit mode (your existing exitEditMode function)
+        exitEditMode(); 
+    });
+
+    // INITIALIZE: Run once on load to set the default style
+    updatePriorityUI(displayPriority.innerText);
+});
